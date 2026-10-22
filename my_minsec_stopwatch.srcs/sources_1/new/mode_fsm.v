@@ -15,6 +15,8 @@ module mode_fsm(
     reg [1:0] r_mode = CLOCK;
     reg sw_running = 0;
     reg sw_clear = 0;
+    reg r_dot = 0;
+
     //clock counter
     reg [$clog2(1000)-1:0] r_clock_1ms; //10ns counter -> 1_000_000
     reg [$clog2(60)-1:0] r_clock_sec;
@@ -51,7 +53,7 @@ module mode_fsm(
                         sw_running <= ~sw_running;
                     else if(btn[1]) begin
                         sw_clear <= 1;
-                        sw_running <=0 ;
+                        sw_running <=1 ;
                     end
                 end
                 default : begin 
@@ -71,6 +73,7 @@ module mode_fsm(
         end else if(r_mode == CLOCK && tick) begin
             if(r_clock_1ms == 999) begin
                 r_clock_1ms <= 0;
+                r_dot <= ~r_dot;
                 if (r_clock_sec == 59) begin
                     r_clock_sec <= 0;
                     if(r_clock_min == 99) 
@@ -109,4 +112,14 @@ module mode_fsm(
             end else r_1ms_counter <= r_1ms_counter + 1;
         end
     end
+
+    always @(*) begin
+        case(r_mode)
+            CLOCK     : led = 5'b00001;
+            STOPWATCH : led = 5'b00010;
+            default   : led = 5'b00001;
+        endcase
+    end
+
+    assign seg_data = (r_mode == CLOCK) ? {r_dot,r_clock_min,r_clock_sec} : {1'b0,r_min_counter,r_sec_counter} ;
 endmodule
