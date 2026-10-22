@@ -1,0 +1,14 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"../../../../../10.up_down_counter/10.up_down_counter.srcs/sources_1/imports/10.19시퀀스구현하기_moor_fsm_101/btn_debounce10ms.v" \
+"../../../../../10.up_down_counter/10.up_down_counter.srcs/sources_1/new/fnd_controller.v" \
+"../../../../my_minsec_stopwatch.srcs/sources_1/new/mode_fsm.v" \
+"../../../../../10.up_down_counter/10.up_down_counter.srcs/sources_1/new/tick_generator.v" \
+"../../../../../10.up_down_counter/10.up_down_counter.srcs/sources_1/new/top.v" \
+"../../../../my_minsec_stopwatch.srcs/sim_1/new/tb_minsec_sw.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
